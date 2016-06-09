@@ -1,0 +1,15 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Kieranajp\\Combinator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Kieranajp\\Combinator\\": "test/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.4"
+    }
+}
