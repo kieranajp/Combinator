@@ -2,13 +2,32 @@
 
 namespace Kieranajp\Combinator;
 
+/**
+ * Class Combinator
+ * Finds all possible combinations of a specific size within an array.
+ *
+ * @package Kieranajp\Combinator
+ */
 class Combinator implements \Iterator
 {
-    protected $counter;
+    /** @var array */
+    protected $counter = [];
+
+    /** @var array */
     protected $choices;
+
+    /** @var int */
     protected $size = 0;
+
+    /** @var int */
     protected $position = 0;
 
+    /**
+     * Set up an instance of Combinator to return sets of `$size` from an array of `$choices`.
+     *
+     * @param array $choices
+     * @param int $size
+     */
     public function __construct(array $choices, int $size = 0)
     {
         $this->choices = array_values($choices);
@@ -16,20 +35,29 @@ class Combinator implements \Iterator
         $this->rewind();
     }
 
-    public function key()
+    /**
+     * {@inheritdoc}
+     */
+    public function key() : int
     {
         return $this->position;
     }
 
-    public function current()
+    /**
+     * {@inheritdoc}
+     */
+    public function current() : array
     {
-        $r = [];
+        $current = [];
         for ($i = 0; $i < $this->size; $i++) {
-            $r[] = $this->choices[$this->counter[$i]];
+            $current[] = $this->choices[$this->counter[$i]];
         }
-        return is_array($this->choices) ? $r : implode('', $r);
+        return $current;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function next()
     {
         if ($this->hasNext()) {
@@ -39,18 +67,29 @@ class Combinator implements \Iterator
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rewind()
     {
         $this->counter = range(0, $this->size);
         $this->position = 0;
     }
 
-    public function valid()
+    /**
+     * {@inheritdoc}
+     */
+    public function valid() : bool
     {
         return $this->position >= 0;
     }
 
-    protected function hasNext()
+    /**
+     * Check that a valid set of three still exists in the provided array.
+     *
+     * @return bool
+     */
+    protected function hasNext() : bool
     {
         $i = $this->size - 1;
         while ($i >= 0 && $this->counter[$i] == count($this->choices) - $this->size + $i) {
